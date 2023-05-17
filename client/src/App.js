@@ -1,11 +1,11 @@
-import { Forms } from "./pages/forms";
+import { Controle } from "./pages/Controle";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Forms />} />
+        <Route path="/Controle" element={<Controle />} />
       </Routes>
     </BrowserRouter>
   );
