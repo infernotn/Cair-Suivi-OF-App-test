@@ -3,12 +3,13 @@ const PizZip = require("pizzip");
 const Docxtemplater = require("docxtemplater");
 const fs = require("fs");
 const path = require("path");
+const { tramesPath } = require("./paths");
 
 //////////
 const SaveValues = (docName, values) => {
   // search for file
-  const fullPath = path.join(__dirname, "files");
-  fs.readdir(fullPath, (error, files) => {
+
+  fs.readdir(tramesPath, (error, files) => {
     if (error) console.log(error);
     files.forEach((file) => {
       console.log(file);
