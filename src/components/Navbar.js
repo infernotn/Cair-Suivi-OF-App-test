@@ -1,20 +1,29 @@
 import React, { useState } from "react";
 import logo from "../assets/images/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoMdLogIn } from "react-icons/io";
 import { useSelector, useDispatch } from "react-redux";
-export default function Navbar() {
+export default function Navbar({ atelier = "" }) {
   const [login, setlogin] = useState(false);
   // const dispatch = useDispatch();
   const isGuest = useSelector((state) => state.user.isGuest);
   const user = useSelector((state) => state.user.user);
   console.log(isGuest);
+  const navigate = useNavigate();
   return (
     <div className="  h-[4rem] w-full px-10 bg-slate-400 bg-opacity-90 sticky top-0 flex justify-between items-center">
       <div className="flex gap-8 h-full py-2">
         <img src={logo} alt="logo" />
-        <h1 className="text-3xl font-bold text-slate-900 shadow-md flex items-center">
+        <h1
+          onClick={() => navigate("/")}
+          className="hover:cursor-pointer hover:text-slate-200 transition-colors text-3xl font-bold text-slate-900 shadow-md flex items-center"
+        >
           Dashbord
+        </h1>
+      </div>
+      <div>
+        <h1 className="underline text-3xl font-bold text-slate-900 shadow-md flex items-center">
+          {atelier}
         </h1>
       </div>
       <div className=" text-slate-900 h-full flex gap-2 items-center">
