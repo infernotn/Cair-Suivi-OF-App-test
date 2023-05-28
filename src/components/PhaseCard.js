@@ -1,21 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
-import AccordionContent from "./AccordionContent";
+import AccordionContent from "./Atelier_AccordionContent";
+import { data } from "../utils/Data";
 
 const Accordion = ({ header, i, expanded, setExpanded }) => {
   const isOpen = i === expanded;
-  const data = [
-    ["5tg000", "23Cair1006", "23L15", "2000"],
-    ["5tg000", "23Cair1006", "23L15", "2000"],
-    ["5tg000", "23Cair1006", "23L15", "2000"],
-    ["5tg000", "23Cair1006", "23L15", "2000"],
-    ["5tg000", "23Cair1006", "23L15", "2000"],
-    ["5tg000", "23Cair1006", "23L15", "2000"],
-    ["5tg000", "23Cair1006", "23L15", "2000"],
-    ["5tg000", "23Cair1006", "23L15", "2000"],
-    ["5tg000", "23Cair1006", "23L15", "2000"],
-    ["5tg000", "23Cair1006", "23L15", "2000"],
-  ];
+
   // By using `AnimatePresence` to mount and unmount the contents, we can animate
   // them in and out while also only rendering the contents of open accordions
   return (
