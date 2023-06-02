@@ -7,10 +7,14 @@ export default function AccordionContent({ ...props }) {
     <div>
       <table className="w-full">
         <tr className="text-left w-full  ">
-          <th className="">Réference</th>
+          {props.headers.map((header) => {
+            return <th className="">{header}</th>;
+          })}
+          {/* <th className="">Réference</th>
           <th className="">N° OF</th>
           <th className="">Lot</th>
-          <th className="">Quantite</th>
+          <th className="">date</th>
+          <th className="">Quantite</th> */}
         </tr>
         {props.data.map((row, index) => {
           let isOdd = index % 2 === 0;
@@ -24,14 +28,16 @@ export default function AccordionContent({ ...props }) {
               {row.map((col, index) => {
                 return <td className="pr-3">{col}</td>;
               })}
-              <td>
-                <BsPlusLg
-                  onClick={() => {
-                    navigate("/of", { state: { of: row } });
-                  }}
-                  className={"  text-xl hover:cursor-pointer"}
-                />
-              </td>
+              {props.plus && (
+                <td>
+                  <BsPlusLg
+                    onClick={() => {
+                      navigate("/of", { state: { of: row } });
+                    }}
+                    className={"  text-xl hover:cursor-pointer"}
+                  />
+                </td>
+              )}
             </tr>
           );
         })}

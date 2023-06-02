@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from "react-router";
 import Navbar from "../components/Navbar";
 import { AnimatePresence, motion } from "framer-motion";
-import { data } from "../utils/Data";
+import { MP, data, ops } from "../utils/Data";
 import Atelier_AccordionContent from "../components/Atelier_AccordionContent";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 
@@ -63,7 +63,11 @@ export default function Of() {
                 }}
                 transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
               >
-                <Atelier_AccordionContent data={data} />
+                <Atelier_AccordionContent
+                  headers={["references", "lot", "quantite"]}
+                  data={MP}
+                  plus={false}
+                />
               </motion.section>
             )}
           </div>
@@ -74,7 +78,7 @@ export default function Of() {
               onClick={() => setisOpenM(!isOpenM)}
             >
               {isOpenM ? <IoIosArrowDown /> : <IoIosArrowForward />}
-              <h1>Preparation MP</h1>
+              <h1>Montage</h1>
             </div>
             {isOpenM && (
               <motion.section
@@ -89,7 +93,10 @@ export default function Of() {
                 }}
                 transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
               >
-                <Atelier_AccordionContent data={data} />
+                <Atelier_AccordionContent
+                  headers={["operation", "poste de charge", "date", "quantite"]}
+                  data={ops}
+                />
               </motion.section>
             )}
           </div>

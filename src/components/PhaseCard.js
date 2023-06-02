@@ -2,10 +2,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import AccordionContent from "./Atelier_AccordionContent";
 import { data } from "../utils/Data";
+import { useSelector } from "react-redux";
 
 const Accordion = ({ header, i, expanded, setExpanded }) => {
   const isOpen = i === expanded;
-
+  const planning = useSelector((state) => state.planning.planning);
   // By using `AnimatePresence` to mount and unmount the contents, we can animate
   // them in and out while also only rendering the contents of open accordions
   return (
@@ -32,7 +33,11 @@ const Accordion = ({ header, i, expanded, setExpanded }) => {
             }}
             transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
           >
-            <AccordionContent data={data} />
+            <AccordionContent
+              headers={["reference", "N°", "Lot", "date", "quantite", "I"]}
+              data={planning}
+              plus={true}
+            />
           </motion.section>
         )}
       </AnimatePresence>
@@ -43,7 +48,7 @@ const Accordion = ({ header, i, expanded, setExpanded }) => {
 export default function PhaseCard({ phase }) {
   const [expanded, setExpanded] = useState(0);
   return (
-    <div className="rounded-xl w-[25rem] h-[40rem] bg-slate-400 flex flex-col justify-start items-center ">
+    <div className="rounded-xl w-[30rem] h-[40rem] bg-slate-400 flex flex-col justify-start items-center ">
       <h1 className="rounded-t-xl bg-slate-500 w-full h-[3rem] flex justify-center items-center  text-xl text-slate-200 font-bold tracking-widest">
         {phase}
       </h1>

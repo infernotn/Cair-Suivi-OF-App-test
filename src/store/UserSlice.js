@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router";
 
 export const counterSlice = createSlice({
   name: "user",
@@ -13,7 +14,7 @@ export const counterSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.user = action.payload;
-      state.isGuest = true;
+      state.isGuest = false;
       console.log("action", action.payload);
       console.log("login", state.user);
     },
@@ -23,7 +24,7 @@ export const counterSlice = createSlice({
         fonction: "",
         atelier: "",
       };
-      state.isGuest = false;
+      state.isGuest = true;
     },
   },
 });

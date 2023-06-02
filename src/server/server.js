@@ -1,8 +1,9 @@
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const app = express();
-
+const upload = require("express-fileupload");
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -23,7 +24,8 @@ const fetchData = async (data) => {
   });
   setTimeout(() => {}, 10000);
 };
-
+app.use(bodyParser.json({ limit: "50mb" }));
+// app.use(bodyParser.urlencoded({limit: "50mb",extended: true,parameterLimit: "50}));
 app.use(express.json());
 app.use(cors());
 app.get("/", async (req, res) => {
@@ -40,6 +42,9 @@ app.post("/controle", (req, res) => {
   const saveValues = require("./saveValues");
   saveValues("DOC-044-2", req.body);
 });
+
+/// get file
+app.use(upload());
 
 app.listen(8800, () => {
   console.log("hello world");

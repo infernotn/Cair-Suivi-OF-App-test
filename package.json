@@ -5,23 +5,26 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
     "axios": "^1.4.0",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
-    "docxtemplater": "^3.37.7",
+    "docxtemplater": "^3.37.9",
     "express": "^4.18.2",
-    "framer-motion": "^10.12.10",
+    "express-fileupload": "^1.4.0",
+    "framer-motion": "^10.12.16",
     "mysql": "^2.18.1",
     "pizzip": "^3.1.4",
     "react": "^18.2.0",
     "react-collapsed": "^4.0.2",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.8.0",
-    "react-redux": "^8.0.5",
-    "react-router": "^6.11.1",
+    "react-icons": "^4.9.0",
+    "react-redux": "^8.0.7",
+    "react-router": "^6.11.2",
     "react-scripts": "^5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^3.3.2",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": " react-scripts start ",
@@ -50,8 +53,8 @@
   "devDependencies": {
     "autoprefixer": "^10.4.14",
     "nodemon": "^2.0.22",
-    "postcss": "^8.4.23",
-    "react-router-dom": "^6.11.1",
+    "postcss": "^8.4.24",
+    "react-router-dom": "^6.11.2",
     "tailwindcss": "^3.3.2"
   }
 }
