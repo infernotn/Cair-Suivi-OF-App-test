@@ -9,14 +9,18 @@ export const planningSlice = createSlice({
   },
   reducers: {
     addOF: (state, action) => {
-      console.log("olayload", action.payload);
       state.planning[state.planning.length] = action.payload;
-      console.log("olayload", state.planning);
+    },
+    updateOF: (state, action) => {
+      state.planning[action.payload[1]] = action.payload[0];
+    },
+    deleteOF: (state, action) => {
+      state.planning.splice(action.payload, 1);
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addOF } = planningSlice.actions;
+export const { addOF, deleteOF, updateOF } = planningSlice.actions;
 
 export default planningSlice.reducer;

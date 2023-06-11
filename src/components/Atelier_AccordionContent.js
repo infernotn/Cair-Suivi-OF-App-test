@@ -8,13 +8,10 @@ export default function AccordionContent({ ...props }) {
       <table className="w-full">
         <tr className="text-left w-full  ">
           {props.headers.map((header) => {
-            return <th className="">{header}</th>;
+            return (
+              <th className={header === "Plus" ? "w-[3rem]" : ""}>{header}</th>
+            );
           })}
-          {/* <th className="">Réference</th>
-          <th className="">N° OF</th>
-          <th className="">Lot</th>
-          <th className="">date</th>
-          <th className="">Quantite</th> */}
         </tr>
         {props.data.map((row, index) => {
           let isOdd = index % 2 === 0;

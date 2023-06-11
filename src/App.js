@@ -4,19 +4,21 @@ import Dashboard from "./pages/Dashboard";
 import { Provider } from "react-redux";
 import store from "./store/Store";
 import Login from "./pages/Login";
-import Atelier from "./pages/Atelier";
+import Atelier from "./pages/Dashboard";
 import Of from "./pages/Of";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <div className="bg-slate-200  h-fit md:h-screen ">
+        <div className="  w-screen  h-screen overflow-y-scroll relative">
+          <Navbar />
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/Controle" element={<Controle />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/atelier" element={<Atelier />} />
+            {/* <Route path="/atelier" element={<Atelier />} /> */}
             <Route path="/of" element={<Of />} />
           </Routes>
         </div>
