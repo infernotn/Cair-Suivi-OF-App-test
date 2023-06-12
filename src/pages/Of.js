@@ -3,8 +3,11 @@ import { useLocation } from "react-router";
 import Navbar from "../components/Navbar";
 import { AnimatePresence, motion } from "framer-motion";
 import { MP, data, ops } from "../utils/Data";
-import Atelier_AccordionContent from "../components/Atelier_AccordionContent";
+import Atelier_AccordionContent from "../components/AccordionContent";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
+import AccordionContent from "../components/AccordionContent";
+import MP_AccordionContent from "../components/MP_Accordion";
+import MPAccordionContent from "../components/MP_Accordion";
 
 export default function Of() {
   const location = useLocation();
@@ -12,30 +15,29 @@ export default function Of() {
   const [isOpenM, setisOpenM] = useState(true);
   return (
     <div className="flex flex-col justify-start items-center">
-      <Navbar />
       <div className="w-[90%] flex justify-around text-2xl text-slate-500 font-semibold my-8">
-        <h1>
-          Réference :{" "}
-          <span className="text-3xl tracking-wider text-slate-900">
-            {location.state.of[0]}
-          </span>
-        </h1>
         <h1>
           N° OF :{" "}
           <span className="text-3xl tracking-wider text-slate-900">
-            {location.state.of[1]}
+            {location.state.of["N° OF"]}
+          </span>
+        </h1>
+        <h1>
+          Réference :{" "}
+          <span className="text-3xl tracking-wider text-slate-900">
+            {location.state.of["Réference"]}
           </span>
         </h1>
         <h1>
           N° Lot :{" "}
           <span className="text-3xl tracking-wider text-slate-900">
-            {location.state.of[2]}
+            {location.state.of["N° Lot"]}
           </span>
         </h1>
         <h1>
           Quanite :{" "}
           <span className="text-3xl tracking-wider text-slate-900">
-            {location.state.of[3]}
+            {location.state.of["Quantite"]}
           </span>
         </h1>
       </div>
@@ -63,9 +65,10 @@ export default function Of() {
                 }}
                 transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
               >
-                <Atelier_AccordionContent
-                  headers={["references", "lot", "quantite"]}
-                  data={MP}
+                <MPAccordionContent
+                  of={location.state.of}
+                  table_header={["reference", "N° lot MP", "Quantite"]}
+                  data={location.state.of["MP"]}
                   plus={false}
                 />
               </motion.section>
@@ -93,10 +96,10 @@ export default function Of() {
                 }}
                 transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
               >
-                <Atelier_AccordionContent
+                {/* <Atelier_AccordionContent
                   headers={["operation", "poste de charge", "date", "quantite"]}
                   data={ops}
-                />
+                /> */}
               </motion.section>
             )}
           </div>

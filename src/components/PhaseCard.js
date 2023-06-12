@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
-import AccordionContent from "./Atelier_AccordionContent";
-import { OF_subPhases, data } from "../utils/Data";
+import AccordionContent from "./AccordionContent";
+import { D_phase, OF_subPhases, data } from "../utils/Data";
 import { useSelector } from "react-redux";
 
 const Accordion = ({ header, i, expanded, setExpanded }) => {
@@ -9,6 +9,7 @@ const Accordion = ({ header, i, expanded, setExpanded }) => {
   const planning = useSelector((state) => state.planning.planning);
   // By using `AnimatePresence` to mount and unmount the contents, we can animate
   // them in and out while also only rendering the contents of open accordions
+
   return (
     <div className=" border-2 border-slate-900 w-full">
       <motion.h1
@@ -36,14 +37,7 @@ const Accordion = ({ header, i, expanded, setExpanded }) => {
             transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
           >
             <AccordionContent
-              headers={[
-                "N° OF",
-                "Réference",
-                "N° Lot",
-                "Quantite",
-                "Statut",
-                "Plus",
-              ]}
+              table_header={D_phase[header]}
               data={planning}
               plus={true}
             />
@@ -62,9 +56,9 @@ export default function PhaseCard({ phase }) {
         {phase}
       </h1>
       <div className=" flex flex-col gap-2 justify-start items-start p-8 w-full ">
-        {OF_subPhases[phase].map((header, index) => (
+        {OF_subPhases[phase].map((sub, index) => (
           <Accordion
-            header={header}
+            header={sub}
             i={index}
             expanded={expanded}
             setExpanded={setExpanded}
