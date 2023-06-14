@@ -6,7 +6,8 @@ import { useSelector } from "react-redux";
 
 const Accordion = ({ header, i, expanded, setExpanded }) => {
   const isOpen = i === expanded;
-  const planning = useSelector((state) => state.planning.planning);
+  let Ofs = [];
+  Ofs = useSelector((state) => state.ofs.OFs);
   // By using `AnimatePresence` to mount and unmount the contents, we can animate
   // them in and out while also only rendering the contents of open accordions
 
@@ -38,7 +39,7 @@ const Accordion = ({ header, i, expanded, setExpanded }) => {
           >
             <AccordionContent
               table_header={D_phase[header]}
-              data={planning}
+              data={Ofs.filter((of) => of.Statut == header)}
               plus={true}
             />
           </motion.section>

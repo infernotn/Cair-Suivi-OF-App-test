@@ -1,39 +1,83 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addOF, deleteOF, updateOF } from "../store/PlanningSlice";
+import {
+  Planning_addOF,
+  Planning_deleteOF,
+  Planning_updateOF,
+} from "../store/PlanningSlice";
+import { addOF } from "../store/OfSlice";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 import { D_phase, Theader_subphase, ateliers } from "../utils/Data";
 
 export default function Planning({ isPlanning, setIsPlanning }) {
+  const [semaine, setSemaine] = useState("S+0");
+
   console.log("Planning");
   const dispatch = useDispatch();
   const [selectedOF, SetselectedOF] = useState(-1);
-  let planning = useSelector((state) => state.planning.planningS);
-  let v = ["", "", 0, "", "", ""];
+  let planningA = useSelector((state) => state.planning.planningA);
+  let planningP = useSelector((state) => state.planning.planning);
+
+  let planning = semaine === "S+0" ? planningA : planningP;
+  let v = {
+    "N° OF": "NA",
+    Réference: "NA",
+    "N° Lot": "NA",
+    Quantite: 0,
+    Statut: "à lancer",
+    atelier: "NA",
+    "Date prévu": "NA",
+    DP: "NA",
+    MP: [],
+  };
   const [of, setOf] = useState(v);
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     console.log(planning, "of");
     e.preventDefault();
     if (selectedOF === -1) {
-      dispatch(addOF(of));
+      // dispatch(addOF({ of: of, selectedS: semaine }));
     } else {
-      dispatch(updateOF([of, selectedOF]));
+      // dispatch(updateOF({ of: of, selected: selectedOF, selectedS: semaine }));
     }
   };
-  useEffect(() => {
-    // let sortedPlanning = planning.sort((a, b) => {
-    //   if (a > b) return -1;
-    //   if (a < b) return 1;
-    //   return 0;
-    // });
-  }, [planning]);
+  useEffect(() => {}, [planningA, planningP]);
 
   return (
     <div className="absolute flex flex-col pt-5 justify-center items-center  z-40 top-0  w-screen h-screen bg-opacity-95 bg-slate-500 ">
       <div className="relative px-10 gap-10 rounded-2xl shadow-2xl bg-slate-600 w-[60rem] h-[60rem] flex flex-col justify-start items-center">
+        <button
+          onClick={() => {
+            if (semaine === "S+0") {
+              setSemaine("S+1");
+            } else {
+              setSemaine("S+0");
+            }
+            console.log("planning A", planningA);
+            console.log("planning P", planningP);
+            console.log("planning", planning);
+          }}
+          className="absolute left-7 top-5 bg-slate-500 py-2 px-3 rounded-xl hover:text-slate-900 text-slate-100 text-lg"
+          type="button"
+        >
+          {" "}
+          {semaine}
+        </button>
+        <button
+          onClick={() => {
+            if (semaine === "S+0") {
+              // setSemaine("S+1");
+            } else {
+              dispatch(addOF(planning));
+            }
+          }}
+          className="absolute right-7 bottom-5 bg-slate-500 py-2 px-3 rounded-xl hover:text-slate-900 text-slate-100 text-lg"
+          type="button"
+        >
+          Valider
+        </button>
         <div
           onClick={() => setIsPlanning(!isPlanning)}
           className="absolute top-2 right-2"
@@ -47,7 +91,7 @@ export default function Planning({ isPlanning, setIsPlanning }) {
           Planning
         </h1>
 
-        <table className=" w-full text-left ">
+        <table className=" w-full text-left h-fit  text-black">
           <tr className="text-slate-200 underline">
             <th>Réference</th>
             <th>N° OF</th>
@@ -85,9 +129,10 @@ export default function Planning({ isPlanning, setIsPlanning }) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleClick(e);
-            setOf(["", "", 0, "", "", ""]);
-            e.target.reset();
+            handleClick(e).then(() => {
+              setOf(["", "", 0, "", "", ""]);
+              e.target.reset();
+            });
           }}
           onsubmit="return false"
           className="w-full flex flex-col items-center gap-4"
@@ -97,31 +142,29 @@ export default function Planning({ isPlanning, setIsPlanning }) {
               type="text"
               className="w-[6rem]"
               onChange={(e) => {
-                v[0] = e.target.value;
-                setOf(v);
+                setOf({ ...of, Réference: e.target.value });
               }}
             />
             <input
               type="text"
               className="w-[6rem]"
               onChange={(e) => {
-                v[1] = e.target.value;
-                setOf(v);
+                console.log("v", of);
+                setOf({ ...of, "N° OF": e.target.value });
+                console.log("v", of);
               }}
             />
             <input
               type="number"
               className="w-[6rem]"
               onChange={(e) => {
-                v[2] = e.target.value;
-                setOf(v);
+                setOf({ ...of, Quantite: e.target.value });
               }}
             />
             <select
               className="w-[6rem]"
               onChange={(e) => {
-                v[3] = e.target.value;
-                setOf(v);
+                setOf({ ...of, atelier: e.target.value });
               }}
             >
               {ateliers.map((atelier) => {
@@ -142,37 +185,57 @@ export default function Planning({ isPlanning, setIsPlanning }) {
               type="date"
               className="w-[6rem]"
               onChange={(e) => {
-                let v = of;
-                v[4] = e.target.value;
-                setOf(v);
-                console.log(of);
+                setOf({ ...of, "Date prévu": e.target.value });
               }}
             />
             <input
               type="text"
               className="w-[6rem]"
               onChange={(e) => {
-                let v = of;
-                v[5] = e.target.value;
-                setOf(v);
-                console.log(of);
+                setOf({ ...of, DP: e.target.value });
               }}
             />
           </div>
           {selectedOF === -1 ? (
-            <button type="submit" className="text-slate-200 text-2xl">
+            <button
+              onClick={() => {
+                dispatch(Planning_addOF({ of: of, selectedS: semaine }));
+                setOf(v);
+              }}
+              type="submit"
+              className="text-slate-200 text-2xl"
+            >
               add
             </button>
           ) : (
             <div className="flex gap-5">
-              <button type="submit" className="text-slate-200 text-2xl">
+              <button
+                onClick={() => {
+                  dispatch(
+                    Planning_updateOF({
+                      selected: selectedOF,
+                      selectedS: semaine,
+                      of: of,
+                    })
+                  );
+                  SetselectedOF(-1);
+                  setOf(v);
+                }}
+                type="submit"
+                className="text-slate-200 text-2xl"
+              >
                 Update
               </button>
               <button
                 onClick={() => {
+                  dispatch(
+                    Planning_deleteOF({
+                      selected: selectedOF,
+                      selectedS: semaine,
+                    })
+                  );
                   SetselectedOF(-1);
-
-                  dispatch(deleteOF(selectedOF));
+                  setOf(v);
                 }}
                 type="submit"
                 className="text-slate-200 text-2xl"
@@ -184,6 +247,7 @@ export default function Planning({ isPlanning, setIsPlanning }) {
 
           <button
             onClick={() => {
+              setOf(v);
               SetselectedOF(-1);
             }}
             className="text-slate-200 text-2xl"

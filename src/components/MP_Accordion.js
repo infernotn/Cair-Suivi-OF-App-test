@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router";
 import { BsFillPlusCircleFill, BsPlusLg } from "react-icons/bs";
 import { useDispatch } from "react-redux";
-import { setMPready } from "../store/PlanningSlice";
+import { setMPready } from "../store/OfSlice";
 export default function MPAccordionContent({
   plus,
   table_header = [],

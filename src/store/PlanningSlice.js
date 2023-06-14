@@ -2,36 +2,39 @@ import { createSlice } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router";
 import { OFs, data } from "../utils/Data";
 
-export const planningSlice = createSlice({
+export const planninglice = createSlice({
   name: "planning",
   initialState: {
-    planning: OFs,
-    planningS: [OFs[0]],
+    planningA: OFs,
+    planning: [],
   },
   reducers: {
-    addOF: (state, action) => {
-      state.planningS[state.planningS.length] = action.payload;
+    Planning_addOF: (state, action) => {
+      if (action.payload.selectedS === "S+0") {
+        state.planningA[state.planningA.length] = action.payload.of;
+      } else {
+        state.planning[state.planning.length] = action.payload.of;
+      }
     },
-    updateOF: (state, action) => {
-      state.planningS[action.payload[1]] = action.payload[0];
+    Planning_updateOF: (state, action) => {
+      if (action.payload.selectedS === "S+0") {
+        state.planningA[action.payload.selected] = action.payload.of;
+      } else {
+        state.planning[action.payload.selected] = action.payload.of;
+      }
     },
-    deleteOF: (state, action) => {
-      state.planningS.splice(action.payload, 1);
-    },
-    setMPready: (state, action) => {
-      console.log("n", state.planning);
-      state.planning = state.planning.map((of) => {
-        if (of["N° OF"] === action.payload[0]["N° OF"]) {
-          console.log("n", of);
-          console.log("n", of.MP[action.payload[1]]);
-          // of.MP[action.payload[1]] = action.payload[2];
-        }
-      });
+    Planning_deleteOF: (state, action) => {
+      if (action.payload.selectedS === "S+0") {
+        state.planningA.splice(action.payload.selected, 1);
+      } else {
+        state.planning.splice(action.payload.selected, 1);
+      }
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addOF, deleteOF, updateOF, setMPready } = planningSlice.actions;
+export const { Planning_addOF, Planning_deleteOF, Planning_updateOF } =
+  planninglice.actions;
 
-export default planningSlice.reducer;
+export default planninglice.reducer;
