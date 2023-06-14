@@ -36,7 +36,7 @@ export const OFs = [
   {
     "N° OF": "23Cair1006",
     Réference: "5TG000",
-    "N° Lot": "",
+    "N° Lot": "23J11",
     Quantite: 10000,
     Statut: "à lancer",
     atelier: "Plasturgie",
@@ -47,7 +47,7 @@ export const OFs = [
   {
     "N° OF": "23Cair0006",
     Réference: "5TG000",
-    "N° Lot": "",
+    "N° Lot": "23J15",
     Quantite: 1000,
     Statut: "à lancer",
     atelier: "Plasturgie",
@@ -58,7 +58,7 @@ export const OFs = [
   {
     "N° OF": "23Cair1026",
     Réference: "5TG000",
-    "N° Lot": "",
+    "N° Lot": "23A11",
     Quantite: 10000,
     Statut: "Préparation MP",
     atelier: "Plasturgie",
@@ -72,7 +72,7 @@ export const OFs = [
   {
     "N° OF": "23Cair1011",
     Réference: "5TG000",
-    "N° Lot": "",
+    "N° Lot": "23J01",
     Quantite: 10000,
     Statut: "Fabrication",
     atelier: "Plasturgie",
@@ -83,7 +83,7 @@ export const OFs = [
   {
     "N° OF": "23Cair1018",
     Réference: "5TG000",
-    "N° Lot": "",
+    "N° Lot": "23C21",
     Quantite: 10100,
     Statut: "Fabrication",
     atelier: "Plasturgie",
@@ -94,7 +94,7 @@ export const OFs = [
   {
     "N° OF": "23Cair1071",
     Réference: "5TG000",
-    "N° Lot": "",
+    "N° Lot": "23D15",
     Quantite: 2000,
     Statut: "Fabrication",
     atelier: "Plasturgie",

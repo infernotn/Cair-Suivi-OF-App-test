@@ -5,24 +5,23 @@ import { addOF, deleteOF, updateOF } from "../store/PlanningSlice";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
-import { ateliers } from "../utils/Data";
+import { D_phase, Theader_subphase, ateliers } from "../utils/Data";
 
 export default function Planning({ isPlanning, setIsPlanning }) {
   console.log("Planning");
   const dispatch = useDispatch();
   const [selectedOF, SetselectedOF] = useState(-1);
-  let planning = useSelector((state) => state.planning.planning);
+  let planning = useSelector((state) => state.planning.planningS);
   let v = ["", "", 0, "", "", ""];
   const [of, setOf] = useState(v);
   const handleClick = (e) => {
+    console.log(planning, "of");
     e.preventDefault();
     if (selectedOF === -1) {
       dispatch(addOF(of));
     } else {
       dispatch(updateOF([of, selectedOF]));
     }
-
-    console.log(planning);
   };
   useEffect(() => {
     // let sortedPlanning = planning.sort((a, b) => {
@@ -68,8 +67,15 @@ export default function Planning({ isPlanning, setIsPlanning }) {
                   console.log("selected", index, planning[index]);
                 }}
               >
-                {of.map((el) => {
-                  return <th>{el === "" ? "NA" : el}</th>;
+                {[
+                  "Réference",
+                  "N° OF",
+                  "Quantite",
+                  "atelier",
+                  "Date prévu",
+                  "DP",
+                ].map((el) => {
+                  return <th>{of[el] === "" ? "NA" : of[el]}</th>;
                 })}
               </tr>
             );
@@ -88,7 +94,6 @@ export default function Planning({ isPlanning, setIsPlanning }) {
         >
           <div className="w-full flex justify-between">
             <input
-              required
               type="text"
               className="w-[6rem]"
               onChange={(e) => {
@@ -97,7 +102,6 @@ export default function Planning({ isPlanning, setIsPlanning }) {
               }}
             />
             <input
-              required
               type="text"
               className="w-[6rem]"
               onChange={(e) => {
@@ -106,7 +110,6 @@ export default function Planning({ isPlanning, setIsPlanning }) {
               }}
             />
             <input
-              required
               type="number"
               className="w-[6rem]"
               onChange={(e) => {
@@ -115,7 +118,6 @@ export default function Planning({ isPlanning, setIsPlanning }) {
               }}
             />
             <select
-              required
               className="w-[6rem]"
               onChange={(e) => {
                 v[3] = e.target.value;
@@ -137,7 +139,6 @@ export default function Planning({ isPlanning, setIsPlanning }) {
               }}
             /> */}
             <input
-              required
               type="date"
               className="w-[6rem]"
               onChange={(e) => {
@@ -148,7 +149,6 @@ export default function Planning({ isPlanning, setIsPlanning }) {
               }}
             />
             <input
-              required
               type="text"
               className="w-[6rem]"
               onChange={(e) => {

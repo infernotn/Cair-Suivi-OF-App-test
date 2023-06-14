@@ -6,16 +6,17 @@ export const planningSlice = createSlice({
   name: "planning",
   initialState: {
     planning: OFs,
+    planningS: [OFs[0]],
   },
   reducers: {
     addOF: (state, action) => {
-      state.planning[state.planning.length] = action.payload;
+      state.planningS[state.planningS.length] = action.payload;
     },
     updateOF: (state, action) => {
-      state.planning[action.payload[1]] = action.payload[0];
+      state.planningS[action.payload[1]] = action.payload[0];
     },
     deleteOF: (state, action) => {
-      state.planning.splice(action.payload, 1);
+      state.planningS.splice(action.payload, 1);
     },
     setMPready: (state, action) => {
       console.log("n", state.planning);
