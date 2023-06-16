@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import PhaseCard from "../components/PhaseCard";
 import { OF_phases } from "../utils/Data";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Planning from "../components/Planning";
+import { prepMP } from "../store/OfSlice";
 
 export default function Dashboard() {
   const [isPlanning, setIsPlanning] = useState(false);
   const user = useSelector((state) => state.user.user);
+
   return (
     <div className="relative    ">
       {/* <Navbar atelier={"CTUK"} /> */}

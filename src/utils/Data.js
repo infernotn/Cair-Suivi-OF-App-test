@@ -36,24 +36,36 @@ export const OFs = [
   {
     "N° OF": "23Cair1006",
     Réference: "5TG000",
-    "N° Lot": "23J11",
+    "N° Lot": "",
     Quantite: 10000,
     Statut: "à lancer",
     atelier: "Plasturgie",
     "Date prévu": "10/5/2023",
     DP: "DP-23-11",
-    MP: [{ reference: "5sep8501N", Quantite: 1200, "N° lot MP": "23S25" }],
+    MP: {
+      "réference 1": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+      "réference 2": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+      "réference 3": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+      "réference 4": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+      "réference 5": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+    },
   },
   {
-    "N° OF": "23Cair0006",
+    "N° OF": "23Cair0005",
     Réference: "5TG000",
-    "N° Lot": "23J15",
+    "N° Lot": "",
     Quantite: 1000,
     Statut: "à lancer",
     atelier: "Plasturgie",
     "Date prévu": "10/5/2023",
     DP: "DP-23-11",
-    MP: [{ reference: "5sep8501N", Quantite: 1200, "N° lot MP": "23S25" }],
+    MP: {
+      "réference 1": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+      "réference 2": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+      "réference 3": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+      "réference 4": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+      "réference 5": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+    },
   },
   {
     "N° OF": "23Cair1026",
@@ -64,10 +76,17 @@ export const OFs = [
     atelier: "Plasturgie",
     "Date prévu": "10/5/2023",
     DP: "DP-23-11",
-    MP: [
-      { reference: "5sep8501N", Quantite: 1200, "N° lot MP": "23S25" },
-      { reference: "5sep8501N", Quantite: 1200, "N° lot MP": "" },
-    ],
+    MP: {
+      "réference 1": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+      "réference 2": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+      "réference 3": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+      "réference 4": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+      "réference 5": { Quantite: 0, "N° lot MP": "", "Preparé par": "" },
+    },
   },
   {
     "N° OF": "23Cair1011",
@@ -78,7 +97,33 @@ export const OFs = [
     atelier: "Plasturgie",
     "Date prévu": "10/5/2023",
     DP: "DP-23-11",
-    MP: [{ reference: "5sep8501N", Quantite: 1200, "N° lot MP": "23S25" }],
+    MP: {
+      "réference 1": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+      "réference 2": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+      "réference 3": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+      "réference 4": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+      "réference 5": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+    },
   },
   {
     "N° OF": "23Cair1018",
@@ -89,7 +134,33 @@ export const OFs = [
     atelier: "Plasturgie",
     "Date prévu": "10/5/2023",
     DP: "DP-23-11",
-    MP: [{ reference: "5sep8501N", Quantite: 1200, "N° lot MP": "23S25" }],
+    MP: {
+      "réference 1": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+      "réference 2": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+      "réference 3": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+      "réference 4": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+      "réference 5": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+    },
   },
   {
     "N° OF": "23Cair1071",
@@ -100,7 +171,33 @@ export const OFs = [
     atelier: "Plasturgie",
     "Date prévu": "10/5/2023",
     DP: "DP-23-11",
-    MP: [{ reference: "5sep8501N", Quantite: 1200, "N° lot MP": "23S25" }],
+    MP: {
+      "réference 1": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+      "réference 2": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+      "réference 3": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+      "réference 4": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+      "réference 5": {
+        Quantite: 1200,
+        "N° lot MP": "23A12",
+        "Preparé par": "3103",
+      },
+    },
   },
 ];
 export const ops = [

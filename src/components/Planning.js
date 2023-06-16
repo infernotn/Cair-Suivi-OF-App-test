@@ -5,8 +5,9 @@ import {
   Planning_addOF,
   Planning_deleteOF,
   Planning_updateOF,
+  clear,
 } from "../store/PlanningSlice";
-import { addOF } from "../store/OfSlice";
+import { addOF, prepareMP, update_OF_list } from "../store/OfSlice";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
@@ -68,9 +69,11 @@ export default function Planning({ isPlanning, setIsPlanning }) {
         <button
           onClick={() => {
             if (semaine === "S+0") {
-              // setSemaine("S+1");
+              dispatch(update_OF_list(planning));
             } else {
               dispatch(addOF(planning));
+
+              dispatch(clear());
             }
           }}
           className="absolute right-7 bottom-5 bg-slate-500 py-2 px-3 rounded-xl hover:text-slate-900 text-slate-100 text-lg"
@@ -106,9 +109,14 @@ export default function Planning({ isPlanning, setIsPlanning }) {
               <tr
                 className={index === selectedOF ? "bg-slate-50" : ""}
                 onClick={async () => {
-                  await SetselectedOF(index);
-                  await setOf(of);
-                  console.log("selected", index, planning[index]);
+                  if (of.Statut == "à lancer") {
+                    await SetselectedOF(index);
+                    await setOf(of);
+                    console.log("selected", index, planning[index]);
+                  } else {
+                    await SetselectedOF(-1);
+                    await setOf(v);
+                  }
                 }}
               >
                 {[

@@ -30,11 +30,15 @@ export const planninglice = createSlice({
         state.planning.splice(action.payload.selected, 1);
       }
     },
+    clear: (state, action) => {
+      state.planningA.push(...state.planning);
+      state.planning = [];
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { Planning_addOF, Planning_deleteOF, Planning_updateOF } =
+export const { Planning_addOF, Planning_deleteOF, Planning_updateOF, clear } =
   planninglice.actions;
 
 export default planninglice.reducer;

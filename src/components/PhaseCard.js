@@ -10,7 +10,7 @@ const Accordion = ({ header, i, expanded, setExpanded }) => {
   Ofs = useSelector((state) => state.ofs.OFs);
   // By using `AnimatePresence` to mount and unmount the contents, we can animate
   // them in and out while also only rendering the contents of open accordions
-
+  let filtredOFS = Ofs.filter((of) => of.Statut == header);
   return (
     <div className=" border-2 border-slate-900 w-full">
       <motion.h1
@@ -20,7 +20,7 @@ const Accordion = ({ header, i, expanded, setExpanded }) => {
         initial={false}
         onClick={() => setExpanded(isOpen ? false : i)}
       >
-        {header + " (" + data.length + ")"}
+        {header + " (" + filtredOFS.length + ")"}
       </motion.h1>
 
       <AnimatePresence initial={false}>

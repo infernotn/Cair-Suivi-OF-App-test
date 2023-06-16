@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { BsFillPlusCircleFill, BsPlusLg } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { setMPready } from "../store/OfSlice";
+import { useSelector } from "react-redux";
+import { setPreparation } from "../store/OperationsSlice";
 export default function MPAccordionContent({
   plus,
   table_header = [],
@@ -29,7 +31,7 @@ export default function MPAccordionContent({
         </tr>
 
         {console.log("d", data)}
-        {data.map((mp, index) => {
+        {Object.keys(data).map((mp, index) => {
           let isOdd = index % 2 === 0;
           return (
             <tr
@@ -39,13 +41,25 @@ export default function MPAccordionContent({
               }
             >
               {table_header.map((header, index) => {
-                return <td className="pr-3">{mp[header]}</td>;
+                if (
+                  (of.MP[mp].Quantite != 0) |
+                  (of.MP[mp]["N° lot MP"] != "")
+                ) {
+                  return (
+                    <td className="pr-3">
+                      {header == "reference" ? mp : of.MP[mp][header]}
+                    </td>
+                  );
+                } else
+                  return (
+                    <td className="pr-3">{header == "reference" ? mp : "-"}</td>
+                  );
               })}
               <td className="">
-                {mp["N° lot MP"] == "" && (
+                {of.MP[mp].Quantite === 0 && of.Statut === "Préparation MP" && (
                   <button
-                    onClick={(mp, index) => {
-                      SetReady(mp, index);
+                    onClick={() => {
+                      dispatch(setPreparation(mp));
                     }}
                   >
                     Set Ready

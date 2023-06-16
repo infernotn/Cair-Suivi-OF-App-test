@@ -13,7 +13,7 @@ export default function Navbar({ atelier = "" }) {
   console.log("hello", user);
   const navigate = useNavigate();
   return (
-    <div className=" z-10 h-[4rem] w-full px-10 bg-slate-400 bg-opacity-90 sticky top-0 flex justify-between items-center">
+    <div className=" z-50 h-[4rem] w-full px-10 bg-slate-400 bg-opacity-90 sticky top-0 flex justify-between items-center">
       <div className="flex gap-8 h-full py-2">
         <img src={logo} alt="logo" />
         <h1
