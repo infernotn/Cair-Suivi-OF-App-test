@@ -30,7 +30,11 @@ export default function AccordionContent({
                 }
               >
                 {table_header.map((col, index) => {
-                  return <td className="pr-3">{of[col]}</td>;
+                  return (
+                    <td key={index} className="pr-3">
+                      {of[col]}
+                    </td>
+                  );
                 })}
                 {plus && (
                   <td>

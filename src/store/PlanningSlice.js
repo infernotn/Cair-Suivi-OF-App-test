@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router";
-import { OFs, data } from "../utils/Data";
+import { OFs_data } from "../utils/Data";
 
 export const planninglice = createSlice({
   name: "planning",
   initialState: {
-    planningA: OFs,
+    planningA: OFs_data,
     planning: [],
   },
   reducers: {

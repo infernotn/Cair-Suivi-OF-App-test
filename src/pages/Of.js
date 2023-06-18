@@ -10,139 +10,160 @@ import MP_AccordionContent from "../components/MP_Accordion";
 import MPAccordionContent from "../components/MP_Accordion";
 import { MP_ref } from "../utils/MP";
 import { useDispatch, useSelector } from "react-redux";
-import { addOF, lancerOF, prepMp } from "../store/OfSlice";
+import {
+  Derogation,
+  addOF,
+  lancerOF,
+  MPready,
+  setMPready,
+  updateOF,
+} from "../store/OfSlice";
 import { setPreparationDone } from "../store/OperationsSlice";
+import OperationsAccordion from "../components/Operations_Accordion";
+import OperationsAccordionC from "../components/Operations_AccordionC";
 
 export default function Of() {
   const dispatch = useDispatch();
-  let preparation = useSelector((state) => state.operations.prepareMP);
   const location = useLocation();
-  let ofs = [];
-  ofs = useSelector((state) =>
-    state.ofs.OFs.filter((of) => of["N° OF"] == location.state.of["N° OF"])
-  );
-  console.log("oooof", ofs);
-  let MPs = ofs[0].MP;
 
-  console.log("oooof", MPs);
+  //states
+  let preparation = useSelector((state) => state.operations.prepareMP);
+  let of = useSelector((state) =>
+    state.ofs.OFs.filter((of) => of["N° OF"] === location.state.of["N° OF"])
+  )[0];
+  console.log("1---- ", of);
   const [isOpenMP, setisOpenMP] = useState(true);
   const [isOpenM, setisOpenM] = useState(true);
-  let mp = { Quantite: 0, "N° lot MP": "", "Preparé par": "" };
-  const handelAddMP = (mp) => {
-    dispatch(
-      prepMp({
-        MP: mp,
-        refMP: preparation.reference,
-        OF: location.state.of["N° OF"],
-      })
-    );
-
-    dispatch(setPreparationDone());
+  //variables
+  let derogation = ``;
+  let operation_trame = {
+    Statut: "",
+    operation: "",
+    QuantiteTotale: 0,
+    historique: [],
   };
+  let historiqueOP_trame = {
+    "Date debut": "",
+    "Date fin": "",
+    Quantite: 0,
+    Matricule: "",
+  };
+  // let of = [];
+  let MPs = of.MP;
+  let mps = { reference: "", Quantite: 0, "N° lot MP": "", "Preparé par": "" };
+  let mp = { reference: "", Quantite: 0, "N° lot MP": "", "Preparé par": "" };
   let lot = "";
+  //fonctions
+
   return (
     <div className="relative flex flex-col justify-start items-center">
-      {/* lancement OF */}
-      {location.state.of["Statut"] == "à lancer" && (
-        <div className="mt-3 w-screen flex justify-center gap-3">
-          <label>N° lot</label>
-          <input
-            onChange={(e) => (lot = e.target.value)}
-            name="lot"
-            type="text"
-            className=""
-          />
-          <button
-            onClick={() => {
-              dispatch(
-                lancerOF({
-                  of: location.state.of["N° OF"],
-                  lot: lot,
-                })
-              );
-            }}
-            className="text-lg bg-slate-500 p-2 text-slate-200"
-          >
-            Lancer
-          </button>
-        </div>
-      )}
-
-      {preparation.ispreparing && (
-        <div className="flex justify-center items-center bsolute top-0 left-0 w-screen h-screen bg-slate-300 bg-opacity-90">
-          <forms className="w-[20rem] flex flex-col gap-3 items-center">
-            <div className="w-full flex justify-between h-8">
-              <label>N° Lot</label>
-              <input
-                type="text"
-                onChange={(e) => (mp["N° Lot MP"] = e.target.value)}
-              />
-            </div>
-            <div className="w-full flex justify-between h-8">
-              <label>Quantite</label>
-              <input
-                type="number"
-                onChange={(e) => (mp["Quantite"] = e.target.value)}
-              />
-            </div>
-            <div className="w-full flex justify-between h-8">
-              <label>Matricule</label>
-              <input
-                type="text"
-                onChange={(e) => (mp["Preparé par"] = e.target.value)}
-              />
-            </div>
-
-            <button
-              className="bg-slate-600 text-slate-200 w-[7rem] "
-              type="submit"
-              onClick={() => {
-                dispatch(
-                  prepMp({
-                    ref: preparation.reference,
-                    mp: mp,
-                    of: location.state.of["N° OF"],
-                  })
-                );
-                dispatch(setPreparationDone());
-              }}
-            >
-              Set Ready
-            </button>
-          </forms>
-        </div>
-      )}
-
       <div className="w-[90%] flex justify-around text-2xl text-slate-500 font-semibold my-8">
         <h1>
           N° OF :{" "}
           <span className="text-3xl tracking-wider text-slate-900">
-            {ofs[0]["N° OF"]}
+            {of["N° OF"]}
           </span>
         </h1>
         <h1>
           Réference :{" "}
           <span className="text-3xl tracking-wider text-slate-900">
-            {ofs[0]["Réference"]}
+            {of["Réference"]}
           </span>
         </h1>
-        {ofs[0]["N° Lot"] != "" && (
+        {of["N° Lot"] != "" && (
           <h1>
             N° Lot :{" "}
             <span className="text-3xl tracking-wider text-slate-900">
-              {ofs[0]["N° Lot"]}
+              {of["N° Lot"]}
             </span>
           </h1>
         )}
         <h1>
           Quantite :{" "}
           <span className="text-3xl tracking-wider text-slate-900">
-            {ofs[0]["Quantite"]}
+            {of["Quantite"]}
           </span>
         </h1>
       </div>
       <AnimatePresence initial={false}>
-        <div className="w-[90%] mx-auto  flex flex-col gap-10 justify-start items-start ">
+        <div className="w-[90%] mx-auto  flex flex-col gap-10 justify-center items-center ">
+          {/* lancement OF */}
+          {of["Statut"] === "à lancer" && (
+            <div className="mt-3 w-screen flex justify-center gap-3">
+              <label>N° lot</label>
+              <input
+                onChange={(e) => (lot = e.target.value)}
+                name="lot"
+                type="text"
+                className=""
+              />
+              <button
+                onClick={() => {
+                  dispatch(
+                    lancerOF({
+                      of: of["N° OF"],
+                      lot: lot,
+                    })
+                  );
+                }}
+                className="text-lg bg-slate-500 p-2 text-slate-200"
+              >
+                Lancer
+              </button>
+            </div>
+          )}
+
+          {/* Derogation OF */}
+
+          {of["DP"] !== "" && (
+            <div className="mx-auto mt-3 w-full  gap-3 bg-slate-200 p-1 rounded">
+              <fieldset className="flex flex-col justify-center items-center gap-2 ">
+                <div className="flex justify-between w-full ">
+                  <legend className="text-lg underline text-slate-900 font-bold tracking-wide">
+                    Dérogation
+                  </legend>
+                  <legend className=" text-slate-900 font-bold tracking-wide text-lg ">
+                    <span className="text-sm underline mr-1">N° DP:</span>{" "}
+                    {of["DP"]}
+                  </legend>
+                </div>
+
+                {of.Statut === "derogation FF" && (
+                  <>
+                    <textarea
+                      placeholder={"Write the derogation here"}
+                      onChange={(e) => {
+                        derogation = e.target.value;
+                      }}
+                      name="lot"
+                      type="text"
+                      className="bg-slate-200 w-full  rounded-lg px-2 py-1 max-h-[10rem] "
+                    />
+                    <button
+                      className="text-lg bg-slate-500 p-2 text-slate-200 w-[15rem] "
+                      onClick={() => {
+                        document
+                          .getElementsByTagName("textarea")
+                          .item(0).value = ``;
+
+                        let var_of = { ...of, Statut: "Préparation MP" };
+                        console.log("var", var_of);
+                        dispatch(
+                          Derogation({ N: of["N° OF"], DP: derogation })
+                        );
+                      }}
+                    >
+                      Déroger
+                    </button>
+                  </>
+                )}
+                {of.Derogation !== "" && (
+                  <p className="w-full">{of.Derogation}</p>
+                )}
+              </fieldset>
+            </div>
+          )}
+
           {/* Preparation MP */}
 
           <div className="w-full bg-slMate-400 rounded-md">
@@ -167,11 +188,76 @@ export default function Of() {
                 transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
               >
                 <MPAccordionContent
-                  of={location.state.of}
-                  table_header={["reference", "N° lot MP", "Quantite"]}
+                  of={of}
+                  table_header={[
+                    "reference",
+                    "N° lot MP",
+                    "Quantite",
+                    "Preparé par",
+                  ]}
                   data={MPs}
                   plus={false}
                 />
+                {of["Statut"] === "Préparation MP" && (
+                  <form
+                    id="mp"
+                    className="mt-2 border-t-2 flex flex-col items-center "
+                  >
+                    <div className="flex justify-between items-center w-full mt-4">
+                      <input
+                        required
+                        className="pl-3 border-2 w-[150px] bg-slate-400 bg-opacity-25 rounded-lg "
+                        type="text"
+                        onChange={(e) => {
+                          mp.reference = e.target.value;
+                        }}
+                      />
+                      <input
+                        required
+                        className="pl-3 border-2 w-[150px] bg-slate-400 bg-opacity-25 rounded-lg "
+                        type="text"
+                        onChange={(e) => (mp["N° lot MP"] = e.target.value)}
+                      />
+                      <input
+                        required
+                        className="pl-3 border-2 w-[150px] bg-slate-400 bg-opacity-25 rounded-lg "
+                        type="number"
+                        onChange={(e) => (mp.Quantite = e.target.value)}
+                      />
+                      <input
+                        required
+                        className="pl-3 border-2 w-[150px] bg-slate-400 bg-opacity-25 rounded-lg "
+                        type="text"
+                        onChange={(e) => (mp["Preparé par"] = e.target.value)}
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="bg-slate-700 hover:bg-slate-500 text-slate-200 px-2 py-1 rounded-lg mt-2"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        var allInputs = document.querySelectorAll("input");
+                        allInputs.forEach(
+                          (singleInput) => (singleInput.value = "")
+                        );
+
+                        dispatch(setMPready({ N: of["N° OF"], mp: mp }));
+                      }}
+                    >
+                      Set ready
+                    </button>
+                    <button
+                      type="submit"
+                      className="bg-slate-700 hover:bg-slate-500 text-slate-200 px-2 py-1 rounded-lg mt-2"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        dispatch(MPready({ N: of["N° OF"] }));
+                      }}
+                    >
+                      Ready to Fab
+                    </button>
+                  </form>
+                )}
               </motion.section>
             )}
           </div>
@@ -184,6 +270,7 @@ export default function Of() {
               {isOpenM ? <IoIosArrowDown /> : <IoIosArrowForward />}
               <h1>Fabrication</h1>
             </div>
+
             {isOpenM && (
               <motion.section
                 key="content"
@@ -197,10 +284,44 @@ export default function Of() {
                 }}
                 transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
               >
-                {/* <Atelier_AccordionContent
-                  headers={["operation", "poste de charge", "date", "quantite"]}
-                  data={ops}
-                /> */}
+                <OperationsAccordion
+                  plus={false}
+                  table_header={["Operations", "Quantite Réalisé", "Statut"]}
+                  operations={of.Operations}
+                  of={of}
+                />
+              </motion.section>
+            )}
+          </div>
+          {/* Controle */}
+          <div className="w-full bg-slate-400 rounded-md">
+            <div
+              className="flex gap-2 items-center bg-slate-700 text-slate-200 hover:cursor-pointer rounded-md text-xl font-semibold tracking-widest pl-5 py-1"
+              onClick={() => setisOpenM(!isOpenM)}
+            >
+              {isOpenM ? <IoIosArrowDown /> : <IoIosArrowForward />}
+              <h1>Controle Qualite</h1>
+            </div>
+
+            {isOpenM && (
+              <motion.section
+                key="content"
+                className="w-full"
+                initial="collapsed"
+                animate="open"
+                exit="collapsed"
+                variants={{
+                  open: { opacity: 1, height: "auto", scaleY: 1 },
+                  collapsed: { opacity: 0, height: 0, scaleY: 0 },
+                }}
+                transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
+              >
+                <OperationsAccordionC
+                  plus={false}
+                  table_header={["Controles", "Quantite Réalisé", "Statut"]}
+                  operations={of.Operations_C}
+                  of={of}
+                />
               </motion.section>
             )}
           </div>

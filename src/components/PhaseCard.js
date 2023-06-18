@@ -59,6 +59,7 @@ export default function PhaseCard({ phase }) {
       <div className=" flex flex-col gap-2 justify-start items-start p-8 w-full ">
         {OF_subPhases[phase].map((sub, index) => (
           <Accordion
+            key={index}
             header={sub}
             i={index}
             expanded={expanded}

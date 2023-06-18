@@ -20,18 +20,16 @@ export default function MPAccordionContent({
 
   return (
     <div>
-      <table className="w-full">
+      <table className="w-full ">
         <tr className="text-left w-full  ">
           {table_header.map((header, index) => {
             console.log(header);
 
             return <th>{header}</th>;
           })}
-          <th className="w-[5rem]">Action</th>
         </tr>
 
-        {console.log("d", data)}
-        {Object.keys(data).map((mp, index) => {
+        {data.map((mp, index) => {
           let isOdd = index % 2 === 0;
           return (
             <tr
@@ -41,31 +39,12 @@ export default function MPAccordionContent({
               }
             >
               {table_header.map((header, index) => {
-                if (
-                  (of.MP[mp].Quantite != 0) |
-                  (of.MP[mp]["N° lot MP"] != "")
-                ) {
-                  return (
-                    <td className="pr-3">
-                      {header == "reference" ? mp : of.MP[mp][header]}
-                    </td>
-                  );
-                } else
-                  return (
-                    <td className="pr-3">{header == "reference" ? mp : "-"}</td>
-                  );
+                if ((mp[header] !== 0) | (mp[header] !== "")) {
+                  return <td className="pr-3">{mp[header]}</td>;
+                } else {
+                  return <td className="pr-3">-</td>;
+                }
               })}
-              <td className="">
-                {of.MP[mp].Quantite === 0 && of.Statut === "Préparation MP" && (
-                  <button
-                    onClick={() => {
-                      dispatch(setPreparation(mp));
-                    }}
-                  >
-                    Set Ready
-                  </button>
-                )}
-              </td>
             </tr>
           );
         })}
