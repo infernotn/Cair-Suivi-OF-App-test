@@ -1,3 +1,18 @@
+export const of_template = {
+  id: 0,
+  N_OF: "",
+  Reference: "",
+  N_LOT: "",
+  Quantite: 0,
+  Statut: "",
+
+  atelier: "",
+  Date_prévu: "",
+  DP: "",
+  Derogation: "",
+  DP_version: 0,
+  Semaine_prévu: 0,
+};
 export const of_status = [
   "à lancer",
   "derogation FF",
@@ -60,3 +75,10 @@ export const color_2 = "#AE3AB0";
 export const color_3 = "#7E3A99";
 export const color_4 = "#6F3AB0";
 export const color_5 = "#4937A6";
+export const ateliers = [
+  "à determiner",
+  "CTUK 1",
+  "CTUK 2",
+  "CTUK 3",
+  "Plasturgie",
+];

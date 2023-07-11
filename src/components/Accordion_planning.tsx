@@ -37,8 +37,6 @@ const Accordion_planning = ({ data, header, i, expanded, setExpanded }) => {
             transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
           >
             <AccordionContent
-              expanded={expanded}
-              setExpanded={setExpanded}
               table_header={[
                 "Réference",
                 "N° OF",

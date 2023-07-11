@@ -11,7 +11,7 @@ import {
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
-import { D_phase, Theader_subphase, ateliers } from "../utils/Data";
+import { D_phase, Theader_subphase } from "../utils/Data";
 import {
   getOfs,
   getPlanningOfWeek,
@@ -20,6 +20,8 @@ import {
 import { OF_type } from "../utils/types";
 import Accordion from "../components/Accordion";
 import Accordion_planning from "../components/Accordion_planning";
+import AccordionContent from "../components/AccordionContent";
+import { ateliers, of_template } from "../utils/variables";
 
 export default function Planning() {
   const [expanded, setExpanded] = useState<number>(0);
@@ -28,118 +30,45 @@ export default function Planning() {
   var days = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));
 
   var weekNumber = Math.ceil(days / 7);
-  const [semaine, setSemaine] = useState<number>(weekNumber);
+  const [semaine, setSemaine] = useState<{ AC: number; PR: number }>({
+    AC: weekNumber,
+    PR: weekNumber + 1,
+  });
+  const [selectedSemaine, setselectedSemaine] = useState<number>(weekNumber);
   const navigate = useNavigate();
-  console.log("Planning");
   const dispatch = useDispatch();
-  const [selectedOF, SetselectedOF] = useState(-1);
-  // let planningA = useSelector((state) => state.planning.planningA);
-  // let planningP = useSelector((state) => state.planning.planning);
-
-  // let planning = semaine === "S+0" ? planningA : planningP;
-  let v = {
-    "N° OF": "NA",
-    Réference: "NA",
-    "N° Lot": "NA",
-    Quantite: 0,
-    Statut: "à lancer",
-    atelier: "NA",
-    "Date prévu": "NA",
-    DP: "NA",
-    MP: [],
-    Operations: {
-      "Operation en cours": 0,
-      Operations_list: [
-        {
-          operation: "Operation 1",
-          Statut: "En cours",
-          QuantiteTotale: 200,
-          historique: [
-            {
-              "Date debut": "14/06/2023",
-              "Date fin": "14/06/2023",
-              Quantite: 100,
-              Matricule: 3103,
-            },
-            {
-              "Date debut": "14/06/2023",
-              "Date fin": "14/06/2023",
-              Quantite: 100,
-              Matricule: 3103,
-            },
-          ],
-        },
-        {
-          operation: "Operation 2",
-          Statut: "",
-          QuantiteTotale: 0,
-          historique: [
-            {
-              "Date debut": "14/06/2023",
-              "Date fin": "14/06/2023",
-              Quantite: 100,
-              Matricule: 3103,
-            },
-          ],
-        },
-        {
-          operation: "Operation 3",
-          Statut: "",
-          QuantiteTotale: 0,
-          historique: [],
-        },
-      ],
-    },
-    Operations_C: {
-      "Operation en cours": -1,
-      Operations_list: [
-        {
-          operation: "Controle 1",
-          Statut: "",
-          QuantiteTotale: 0,
-          historique: [],
-        },
-        {
-          operation: "Controle 2",
-          Statut: "",
-          QuantiteTotale: 0,
-          historique: [],
-        },
-        {
-          operation: "Controle 3",
-          Statut: "",
-          QuantiteTotale: 0,
-          historique: [],
-        },
-      ],
-    },
-  };
+  const [selectedOF, SetselectedOF] = useState<{ N_OF: string; index: number }>(
+    {
+      N_OF: "",
+      index: -1,
+    }
+  );
+  const [of, setOf] = useState<OF_type>(of_template);
+  let ofToDelete = [];
   const [planningA, setPlanningA] = useState<OF_type[]>([]);
-  // const handleClick = async (e) => {
-  //   console.log(planning, "of");
-  //   e.preventDefault();
-  //   if (selectedOF === -1) {
-  //     // dispatch(addOF({ of: of, selectedS: semaine }));
-  //   } else {
-  //     // dispatch(updateOF({ of: of, selected: selectedOF, selectedS: semaine }));
-  //   }
-  // };
-  // useEffect(() => {}, [planningA, planningP]);
-  let planning: OF_type[] = [];
+  const [planningP, setPlanningP] = useState<OF_type[]>([]);
 
+  let planning: OF_type[] = [];
   useEffect(() => {
-    getPlanningOfWeek(semaine).then((ofs) => setPlanningA(ofs));
+    setOf(planningP.filter((of: OF_type) => of.N_OF === selectedOF.N_OF)[0]);
+    console.log(of);
+  }, [selectedOF]);
+  useEffect(() => {
+    getPlanningOfWeek(selectedSemaine).then((ofs) => {
+      setPlanningA(ofs.filter((of: OF_type) => of.Semaine_prévu <= semaine.AC));
+    });
     console.log("planning", planningA);
-  }, []);
+  }, [selectedSemaine]);
+
   return (
     <div className="absolute flex flex-col pt-5 justify-center items-center  z-40 top-0  w-screen h-screen  ">
       <div className="relative px-10 gap-10 rounded-2xl shadow-2xl bg-violet-600  w-[60rem] h-[60rem] flex flex-col justify-start items-center">
         <button
           onClick={() => {
-            if (semaine === weekNumber) {
-              setSemaine(weekNumber + 1);
+            if (selectedSemaine === weekNumber) {
+              setselectedSemaine(weekNumber + 1);
             } else {
-              setSemaine(weekNumber);
+              setselectedSemaine(weekNumber);
             }
             // console.log("planning A", planningA);
             // console.log("planning P", planningP);
@@ -149,7 +78,7 @@ export default function Planning() {
           type="button"
         >
           {" Semaine : "}
-          <span className="font-bold underline">{semaine}</span>
+          <span className="font-bold underline">{selectedSemaine}</span>
         </button>
         {/* valider */}
         <button
@@ -184,154 +113,190 @@ export default function Planning() {
           }}
         /> */}
 
-        {["OFs en retard", "OF du semaine"].map((sub, index) => {
-          let data: OF_type[] = [];
-          if (sub === "OFs en retard") {
-            data = planningA.filter((of) => of.Semaine_prévu < semaine);
-          } else {
-            data = planningA.filter((of) => of.Semaine_prévu == semaine);
-          }
-          return (
-            <Accordion_planning
-              data={data}
-              // key={index}
-              header={sub}
-              i={index}
-              expanded={expanded}
-              setExpanded={setExpanded}
-            />
-          );
-        })}
+        {selectedSemaine === semaine.AC &&
+          ["OFs en retard", "OF du semaine"].map((sub, index) => {
+            let data: OF_type[] = [];
+            if (sub === "OFs en retard") {
+              data = planningA.filter(
+                (of) => of.Semaine_prévu <= selectedSemaine
+              );
+            } else {
+              data = planningA.filter(
+                (of) => of.Semaine_prévu === selectedSemaine
+              );
+            }
+            return (
+              <Accordion_planning
+                data={data}
+                // key={index}
+                header={sub}
+                i={index}
+                expanded={expanded}
+                setExpanded={setExpanded}
+              />
+            );
+          })}
 
-        {/* <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            // handleClick(e).then(() => {
-            //   setOf(["", "", 0, "", "", ""]);
-            //   e.target.reset();
-            // });
-          }}
-          // onsubmit="return false"
-          className="w-full flex flex-col items-center gap-4"
-        >
-          <div className="w-full flex justify-between">
-            <input
-              type="text"
-              className="w-[6rem]"
-              onChange={(e) => {
-                setOf({ ...of, Réference: e.target.value });
-              }}
+        {selectedSemaine === semaine.PR && (
+          <div className={"  w-full h-full   "}>
+            <AccordionContent
+              table_header={[
+                "Réference",
+                "N° OF",
+                "Quantite",
+                "Atelier",
+                "Date prévu",
+                "N° DP",
+                "DP_version",
+              ]}
+              data={planningP}
+              plus={false}
+              selectedOF={selectedOF}
+              setSelected={SetselectedOF}
             />
-            <input
-              type="text"
-              className="w-[6rem]"
-              onChange={(e) => {
-                console.log("v", of);
-                setOf({ ...of, "N° OF": e.target.value });
-                console.log("v", of);
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                // handleClick(e).then(() => {
+                //   setOf(["", "", 0, "", "", ""]);
+                //   e.target.reset();
+                // });
               }}
-            />
-            <input
-              type="number"
-              className="w-[6rem]"
-              onChange={(e) => {
-                // setOf({ ...of, Quantite: e.target.value });
-              }}
-            />
-            <select
-              className="w-[6rem]"
-              onChange={(e) => {
-                setOf({ ...of, atelier: e.target.value });
-              }}
+              className="w-full flex flex-col items-center gap-4 mt-10"
             >
-              {ateliers.map((atelier) => {
-                return <option> {atelier} </option>;
-              })}
-            </select>
-            <input
-              required
-              type="text"
-              className="w-[6rem]"
-              onChange={(e) => {
-                let v = of;
-                // v[3] = e.target.value;
-                setOf(v);
-              }}
-            />
-            <input
-              type="date"
-              className="w-[6rem]"
-              onChange={(e) => {
-                setOf({ ...of, "Date prévu": e.target.value });
-              }}
-            />
-            <input
-              type="text"
-              className="w-[6rem]"
-              onChange={(e) => {
-                setOf({ ...of, DP: e.target.value });
-              }}
-            />
+              <div className="w-full flex justify-between">
+                <input
+                  required
+                  placeholder="Réference"
+                  type="text"
+                  className="w-[6rem] text-center"
+                  onChange={(e) => {
+                    setOf({ ...of, Reference: e.target.value });
+                  }}
+                />
+                <input
+                  required
+                  placeholder="N° OF	"
+                  type="text"
+                  className="w-[6rem] text-center"
+                  onChange={(e) => {
+                    setOf({ ...of, N_OF: e.target.value });
+                    console.log("v", of);
+                  }}
+                />
+                <input
+                  required
+                  placeholder="Quantite"
+                  type="number"
+                  className="w-[6rem] text-center"
+                  onChange={(e) => {
+                    setOf({ ...of, Quantite: parseFloat(e.target.value) });
+                  }}
+                />
+                <select
+                  placeholder="Atelier"
+                  className="w-[120px] text-center"
+                  onChange={(e) => {
+                    setOf({ ...of, atelier: e.target.value });
+                  }}
+                >
+                  {ateliers.map((atelier) => {
+                    return <option> {atelier} </option>;
+                  })}
+                </select>
+
+                <input
+                  placeholder="	Date prévu"
+                  type="date"
+                  className="w-[6rem] text-center"
+                  onChange={(e) => {
+                    setOf({ ...of, Date_prévu: e.target.value });
+                  }}
+                />
+                <input
+                  placeholder="	N° DP"
+                  type="text"
+                  className="w-[6rem] text-center"
+                  onChange={(e) => {
+                    setOf({ ...of, DP: e.target.value });
+                  }}
+                />
+                <input
+                  placeholder="DP Version"
+                  type="number"
+                  className="w-[5rem] text-center"
+                  onChange={(e) => {
+                    setOf({ ...of, DP_version: parseInt(e.target.value) });
+                  }}
+                />
+              </div>
+              {selectedOF.index === -1 ? (
+                <button
+                  onClick={() => {
+                    if (of.N_OF !== "") {
+                      let N_OFs: string[] = [];
+                      planningP.forEach((of) => {
+                        N_OFs.push(of.N_OF);
+                      });
+                      if (N_OFs.indexOf(of.N_OF) === -1) {
+                        setPlanningP([...planningP, of]);
+                      } else {
+                        window.alert("OF already existe");
+                      }
+                    }
+                  }}
+                  type="submit"
+                  className="text-violet-200 text-2xl"
+                >
+                  add
+                </button>
+              ) : (
+                <div className="flex gap-5">
+                  <button
+                    onClick={() => {
+                      // dispatch(
+                      //   Planning_updateOF({
+                      //     selected: selectedOF,
+                      //     selectedS: semaine,
+                      //     of: of,
+                      //   })
+                      //   );
+                      //   SetselectedOF(-1);
+                      //   setOf(v);
+                    }}
+                    type="submit"
+                    className="text-violet-200 text-2xl"
+                  >
+                    Update
+                  </button>
+                  <button
+                    onClick={() => {
+                      console.log("delete", of);
+                      ofToDelete.push(of);
+                      setPlanningP(planningP.filter((p) => p.N_OF !== of.N_OF));
+                      SetselectedOF({ N_OF: "", index: -1 });
+                    }}
+                    type="submit"
+                    className="text-violet-200 text-2xl"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+
+              <button
+                onClick={() => {
+                  setOf(of_template);
+                  SetselectedOF({ N_OF: "", index: -1 });
+                }}
+                className="text-violet-200 text-2xl"
+              >
+                Cancel
+              </button>
+            </form>
           </div>
-          {selectedOF === -1 ? (
-            <button
-              onClick={() => {
-                dispatch(Planning_addOF({ of: of, selectedS: semaine }));
-                setOf(v);
-              }}
-              type="submit"
-              className="text-violet-200 text-2xl"
-            >
-              add
-            </button>
-          ) : (
-            <div className="flex gap-5">
-              <button
-                onClick={() => {
-                  dispatch(
-                    Planning_updateOF({
-                      selected: selectedOF,
-                      selectedS: semaine,
-                      of: of,
-                    })
-                  );
-                  SetselectedOF(-1);
-                  setOf(v);
-                }}
-                type="submit"
-                className="text-violet-200 text-2xl"
-              >
-                Update
-              </button>
-              <button
-                onClick={() => {
-                  dispatch(
-                    Planning_deleteOF({
-                      selected: selectedOF,
-                      selectedS: semaine,
-                    })
-                  );
-                  SetselectedOF(-1);
-                  setOf(v);
-                }}
-                type="submit"
-                className="text-violet-200 text-2xl"
-              >
-                Delete
-              </button>
-            </div>
-          )}
-
-          <button
-            onClick={() => {
-              setOf(v);
-              SetselectedOF(-1);
-            }}
-            className="text-violet-200 text-2xl"
-          >
-            Cancel
-          </button>
-        </form> */}
+        )}
       </div>
     </div>
   );

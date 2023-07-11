@@ -1,7 +1,7 @@
 export type OF_type = {
   id: number;
   N_OF: string;
-  Réference: string;
+  Reference: string;
   N_LOT: string;
   Quantite: number;
   Statut: string;

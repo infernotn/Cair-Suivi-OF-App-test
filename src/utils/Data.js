@@ -70,4 +70,4 @@ export const Theader_subphase = {
     "I",
   ],
 };
-export const ateliers = ["CTUK 1", "CTUK 2", "CTUK 3", "Plasturgie"];
+

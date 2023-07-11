@@ -6,13 +6,17 @@ import { useDispatch } from "react-redux";
 import { Select } from "../store/OfSlice";
 import { OF_type } from "../utils/types";
 export default function AccordionContent({
-  plus,
+  plus = false,
   table_header = [],
   data = [],
+  selectedOF = { N_OF: "", index: -1 },
+  setSelected,
 }: {
   plus: boolean;
   table_header: string[];
   data: OF_type[] | any[];
+  selectedOF: { N_OF: string; index: number };
+  setSelected: any;
 }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -26,15 +30,23 @@ export default function AccordionContent({
 
               return <th>{header}</th>;
             })}
-            <th className="w-[3rem]">Plus</th>
+            {plus && <th className="w-[3rem]">Plus</th>}
           </tr>
           {data.map((of, index) => {
             let isOdd = index % 2 === 0;
             return (
               <tr
+                onClick={() =>
+                  selectedOF.index === index
+                    ? setSelected({ N_OF: "", index: -1 })
+                    : setSelected({ N_OF: of.N_OF, index: index })
+                }
                 className={
-                  (isOdd ? "bg-purple-200 bg-opacity-70" : "bg-purple-500") +
-                  " text-purple-950  bg-opacity-70 hover:bg-purple-800 hover:text-purple-200 border-collapse border-y-2 border-purple-900 "
+                  (isOdd ? "bg-purple-200 " : "bg-purple-500") +
+                  " text-center text-purple-950   hover:bg-purple-800 hover:text-purple-200 border-collapse border-y-2 border-purple-900 " +
+                  (selectedOF.index === index
+                    ? "bg-purple-900 text-purple-100 text-xl underline"
+                    : "")
                 }
               >
                 {table_header.map((col, index) => {
